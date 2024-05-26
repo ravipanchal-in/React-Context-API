@@ -1,8 +1,15 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Context as BlogContext } from "../context/BlogContext";
+import { Link } from "react-router-dom";
 
 const BlogPosts = () => {
-  const { state, addBlogPost } = useContext(BlogContext);
+  const { state, getBlogPosts, addBlogPost } = useContext(BlogContext);
+
+  useEffect(() => {
+    if (state.length == 0) {
+      getBlogPosts();
+    }
+  }, []);
 
   return (
     <div>
@@ -10,7 +17,9 @@ const BlogPosts = () => {
       <button onClick={addBlogPost}>Add Blog Post</button>
       <div>
         {state.map((item, index) => (
-          <div key={index}>{item.title}</div>
+          <div key={index}>
+            <Link to={"/post-details/" + item.id}>{item.title}</Link>
+          </div>
         ))}
       </div>
     </div>
